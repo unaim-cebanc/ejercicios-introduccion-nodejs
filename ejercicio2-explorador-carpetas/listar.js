@@ -1,7 +1,6 @@
 import pc from 'picocolors'
 import path from 'node:path'
 import fs from 'node:fs/promises'
-import { stat } from 'node:fs';
 
 const carpeta = process.argv[2] ?? '.';
 

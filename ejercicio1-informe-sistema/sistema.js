@@ -1,13 +1,41 @@
 import pc from 'picocolors'
 import os from 'node:os'
 
-const cpus = os.cpus()
+const equipo = os.hostname();
+const usuario = os.userInfo().username;
+
+const so = nombreOs(os.platform());
+const version = os.release();
+const arq = os.arch();
+
+const cpus = os.cpus();
+const modelocpu = cpus[0].model;
+const qtycpu = cpus.length
+
 const memtotal = (os.totalmem() / 1024 / 1024 / 1024).toFixed(2);
 const memlibre = (os.freemem() / 1024 / 1024 / 1024).toFixed(2);
 const memusada = memtotal - memlibre;
 const porcentaje = ((memusada / memtotal) * 100).toFixed(2);
 
-function nombreOs(plataforma) {
+const contenido = [
+    `${pc.cyan(pc.bold('=============== Información del sistema ==============='))}`,
+    `${pc.dim('Equipo:')}  ${equipo}`,
+    `${pc.dim('Usuario:')} ${usuario}`,
+    `${pc.dim('Sistema:')}`,
+    `\t${pc.dim(pc.italic('SO:'))}           ${so}`,
+    `\t${pc.dim(pc.italic('Version:'))}      ${version}`,
+    `\t${pc.dim(pc.italic('Arquitectura:'))} ${arq}`,
+    `${pc.dim('Procesador:')}`,
+    `\t${pc.dim(pc.italic('Modelo:'))}       ${modelocpu}`,
+    `\t${pc.dim(pc.italic('Cantidad:'))}     ${qtycpu}`,
+    `${pc.dim('Memoria:')}`,
+    `\t${pc.dim(pc.italic('Total:'))}        ${memtotal}`,
+    `\t${pc.dim(pc.italic('Libre:'))}        ${memlibre}`,
+    `\t${pc.dim(pc.italic('% Usado:'))}      ${colorearPorcentaje(porcentaje)}`,
+    `${pc.cyan(pc.bold('======================================================'))}`
+].join('\n');
+
+export function nombreOs(plataforma) {
     switch (plataforma) {
         case 'win32': return 'Windows';
         case 'linux': return 'Linux';
@@ -26,21 +54,10 @@ function colorearPorcentaje(porcentaje) {
     }
 }
 
-console.log(pc.cyan(pc.bold('=============== Información del sistema ===============')));
-console.log(pc.dim('Equipo:        '), os.hostname());
-console.log(pc.dim('Usuario actual:'), os.userInfo().username);
+export function imprimirContenido() {
+    console.log(contenido);
+}
 
-console.log(pc.dim('Sistema:'));
-console.log(pc.dim(pc.italic('\tSistema Operativo:')), nombreOs(os.platform()));
-console.log(pc.dim(pc.italic('\tVersion:          ')), os.release());
-console.log(pc.dim(pc.italic('\tArquitectura:     ')), os.arch());
-
-console.log(pc.dim('Procesador:'));
-console.log(pc.dim(pc.italic('\tModelo:           ')), cpus[0].model);
-console.log(pc.dim(pc.italic('\tCantidad:         ')), cpus.length)
-
-console.log(pc.dim('Memoria:        '));
-console.log(pc.dim(pc.italic('\tTotal:            ')), memtotal, 'GB');
-console.log(pc.dim(pc.italic('\tLibre:            ')), memlibre, 'GB');
-console.log(pc.dim(pc.italic('\t% Usado:          ')), colorearPorcentaje(porcentaje));
-console.log(pc.cyan(pc.bold('======================================================')));
+if (import.meta.main) {
+    imprimirContenido();
+}
