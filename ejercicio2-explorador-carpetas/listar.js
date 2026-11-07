@@ -15,11 +15,12 @@ async function ls(carpeta) {
         contenido = await fs.readdir(carpeta);
         
         console.log(
-                pc.bold('Nombre'.padEnd(30)),
-                pc.bold('Tamaño'.padStart(8))
-            );
-        
-        for (const archivo of contenido) {
+            pc.bold('Nombre'.padEnd(31)),
+            ' | ',
+            pc.bold('Tamaño'.padStart(8)),
+        );
+        console.log('-'.repeat(45))
+            for (const archivo of contenido) {
             const filePath = path.join(carpeta, archivo);
             
             let stats;
@@ -30,25 +31,33 @@ async function ls(carpeta) {
             }
             
             if (stats.isDirectory()) {
-                console.log(pc.blue((archivo + '/').padEnd(30)));
-                carpetas = carpetas + 1;
+                console.log(
+                    pc.blue((archivo + '/').padEnd(31)),
+                    ' | '
+                );
+                ++carpetas;
             }
             if (stats.isFile()) {
                 if (archivo.indexOf('.') == 0) {
-                    console.log(pc.dim(archivo.padEnd(30)));
-                    archivos = archivos + 1;
+                    console.log(
+                        pc.dim(archivo.padEnd(31)),
+                        ' | '
+                    );
+                    ++archivos;
                     continue;
                 }
                 
                 let tamaño = (stats.size / 1024).toFixed(2);
                 console.log(
-                    pc.green(archivo.padEnd(30)),
+                    pc.green(archivo.padEnd(31)),
+                    ' | ',
                     pc.gray((tamaño + 'KB').padStart(8))
                 );
-                archivos = archivos + 1;
+                ++archivos;
                 sizes = sizes + tamaño;
             }
         }
+        console.log('-'.repeat(45))
         console.log(
             pc.bold(carpetas) + ' carpetas',
             pc.bold(archivos) + ' archivos',
