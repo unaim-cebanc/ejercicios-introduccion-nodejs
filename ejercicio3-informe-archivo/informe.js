@@ -37,14 +37,6 @@ const contenido = [
     `\t% Usado:\t${porcentaje}`
 ].join('\n');
 
-/* function nombreOs(plataforma) {
-    switch (plataforma) {
-        case 'win32': return 'Windows';
-        case 'linux': return 'Linux';
-        default: return 'Desconocido'
-    }
-} */
-
 function generarInforme() {
     if (!fs.existsSync('informe.txt')) {
         console.log(
