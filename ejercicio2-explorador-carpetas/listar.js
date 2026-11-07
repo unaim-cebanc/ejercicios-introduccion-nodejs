@@ -10,6 +10,7 @@ async function ls(carpeta) {
     let carpetas = 0;
     let archivos = 0;
     let sizes = 0;
+    let tamaño = 0;
     
     try {
         contenido = await fs.readdir(carpeta);
@@ -47,7 +48,7 @@ async function ls(carpeta) {
                     continue;
                 }
                 
-                let tamaño = (stats.size / 1024).toFixed(2);
+                tamaño = stats.size / 1024;
                 console.log(
                     pc.green(archivo.padEnd(31)),
                     ' | ',
@@ -61,7 +62,7 @@ async function ls(carpeta) {
         console.log(
             pc.bold(carpetas) + ' carpetas',
             pc.bold(archivos) + ' archivos',
-            pc.bold(sizes) + ' KB en total'
+            pc.bold(sizes.toFixed(2)) + ' KB en total'
         );
     } catch {
         console.error(pc.red(pc.bold('Ruta introducida no existe')));
